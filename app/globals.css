@@ -1,0 +1,283 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: hsl(0 0% 100%); /* Preserve existing */
+  --foreground: hsl(222.2 84% 4.9%); /* Preserve existing */
+  --card: hsl(0 0% 100%); /* Preserve existing */
+  --card-foreground: hsl(222.2 84% 4.9%); /* Preserve existing */
+  --popover: hsl(0 0% 100%); /* Preserve existing */
+  --popover-foreground: hsl(222.2 84% 4.9%); /* Preserve existing */
+  --primary: hsl(221.2 83.2% 53.3%); /* Preserve existing */
+  --primary-foreground: hsl(210 40% 98%); /* Preserve existing */
+  --secondary: hsl(210 40% 96%); /* Preserve existing */
+  --secondary-foreground: hsl(222.2 84% 4.9%); /* Preserve existing */
+  --muted: hsl(210 40% 96%); /* Preserve existing */
+  --muted-foreground: hsl(215.4 16.3% 46.9%); /* Preserve existing */
+  --accent: hsl(210 40% 96%); /* Preserve existing */
+  --accent-foreground: hsl(222.2 84% 4.9%); /* Preserve existing */
+  --destructive: hsl(0 84.2% 60.2%); /* Preserve existing */
+  --destructive-foreground: hsl(210 40% 98%); /* Preserve existing */
+  --border: hsl(214.3 31.8% 91.4%); /* Preserve existing */
+  --input: hsl(214.3 31.8% 91.4%); /* Preserve existing */
+  --ring: hsl(221.2 83.2% 53.3%); /* Preserve existing */
+  --radius: 0.75rem; /* Preserve existing */
+
+  /* New chart colors from diff */
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+
+  /* New sidebar colors from diff */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: hsl(222.2 84% 4.9%); /* Preserve existing */
+  --foreground: hsl(210 40% 98%); /* Preserve existing */
+  --card: hsl(222.2 84% 4.9%); /* Preserve existing */
+  --card-foreground: hsl(210 40% 98%); /* Preserve existing */
+  --popover: hsl(222.2 84% 4.9%); /* Preserve existing */
+  --popover-foreground: hsl(210 40% 98%); /* Preserve existing */
+  --primary: hsl(217.2 91.2% 59.8%); /* Preserve existing */
+  --primary-foreground: hsl(222.2 84% 4.9%); /* Preserve existing */
+  --secondary: hsl(217.2 32.6% 17.5%); /* Preserve existing */
+  --secondary-foreground: hsl(210 40% 98%); /* Preserve existing */
+  --muted: hsl(217.2 32.6% 17.5%); /* Preserve existing */
+  --muted-foreground: hsl(215 20.2% 65.1%); /* Preserve existing */
+  --accent: hsl(217.2 32.6% 17.5%); /* Preserve existing */
+  --accent-foreground: hsl(210 40% 98%); /* Preserve existing */
+  --destructive: hsl(0 62.8% 30.6%); /* Preserve existing */
+  --destructive-foreground: hsl(210 40% 98%); /* Preserve existing */
+  --border: hsl(217.2 32.6% 17.5%); /* Preserve existing */
+  --input: hsl(217.2 32.6% 17.5%); /* Preserve existing */
+  --ring: hsl(224.3 76.3% 94.1%); /* Preserve existing */
+
+  /* New chart colors from diff */
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+
+  /* New sidebar colors from diff */
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline { /* Changed from @theme to @theme inline and simplified variable usage per diff */
+  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* New chart colors */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* New radius variables */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* New sidebar colors */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50; /* Added outline-ring/50 from diff */
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1; /* Preserved existing line */
+  }
+}
+
+/* Enhanced navigation styles */
+.navigation-menu-viewport {
+  @apply bg-background/95 backdrop-blur-sm border shadow-xl rounded-lg;
+}
+
+/* Ensure header stays on top with enhanced styling */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(20px);
+}
+
+/* Smooth transitions for navigation with enhanced easing */
+.nav-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced search dropdown styling */
+[cmdk-root] {
+  @apply bg-background/95 backdrop-blur-sm;
+}
+
+[cmdk-group-heading] {
+  @apply text-muted-foreground font-semibold text-xs uppercase tracking-wider;
+}
+
+[cmdk-item] {
+  @apply cursor-pointer rounded-lg transition-all duration-200;
+}
+
+[cmdk-item][aria-selected="true"] {
+  @apply bg-accent text-accent-foreground shadow-sm;
+}
+
+/* Enhanced mobile navigation improvements */
+@media (max-width: 768px) {
+  .mobile-nav-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .mobile-nav-scroll::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted/20;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/20 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/40;
+}
+
+/* Enhanced card hover effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04);
+}
+
+/* Gradient text utilities */
+.gradient-text {
+  @apply bg-gradient-to-r from-primary via-primary/90 to-primary/80 bg-clip-text text-transparent;
+}
+
+/* Enhanced button animations */
+.button-hover {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.button-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
+}
+
+/* Loading animations */
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Enhanced focus styles */
+.focus-enhanced:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+}
+
+/* Backdrop blur utilities */
+.backdrop-blur-enhanced {
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Glass morphism effect */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-morphism {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced shadow utilities */
+.shadow-enhanced {
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgb(var(--primary) / 0.3);
+}
+
+/* Improved spacing for better visual hierarchy */
+.section-spacing {
+  @apply py-12 md:py-16 lg:py-20;
+}
+
+.content-spacing {
+  @apply space-y-8 md:space-y-12 lg:space-y-16;
+}
