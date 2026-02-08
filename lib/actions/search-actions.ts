@@ -1,6 +1,6 @@
-import { generateText } from 'path-to-generateText'; // Assuming generateText is imported from some module
-import { use } from 'path-to-use'; // Assuming use is imported from some module
-import { server } from 'path-to-server'; // Assuming server is imported from some module
+// Removed placeholder imports that caused package resolution errors during installs.
+// These were unused and pointed to non-existent packages like
+// 'path-to-generateText', 'path-to-use', and 'path-to-server'.
 
 interface SearchSuggestion {
   id: string
