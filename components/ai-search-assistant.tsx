@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import React, { useState, useEffect, useRef, useCallback } from "react"
 import {
   Search,
   Mic,
@@ -54,7 +54,7 @@ interface ProactiveSuggestion {
   description: string
   action: string
   href: string
-  icon: any
+  icon: React.ComponentType<{ className?: string }>
   priority: number
 }
 
@@ -252,9 +252,9 @@ export function AISearchAssistant() {
 
   // Keyboard navigation with enhanced features
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isOpen) return
+    if (!isOpen) return
 
+    const handleKeyDown = (e: KeyboardEvent) => {
       const totalItems = results.length + autoCompletions.length
 
       switch (e.key) {
@@ -297,7 +297,7 @@ export function AISearchAssistant() {
 
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [isOpen, results, autoCompletions, selectedIndex])
+  }, [isOpen, results, autoCompletions, selectedIndex, handleResultSelect])
 
   const handleResultSelect = useCallback(
     (result: SearchResult) => {

@@ -1,5 +1,4 @@
-// Import necessary modules or declare variables here
-// For example, if 'use server' is a directive, it should be at the top
+'use server'
 
 interface SearchResult {
   id: string
@@ -41,10 +40,15 @@ interface ProcessedQuery {
   suggestions: string[]
 }
 
-// Declare generateText function here or import it
+// Fallback generateText when AI SDK is not available
 async function generateText(options: any): Promise<any> {
-  // Mock implementation for demonstration purposes
-  return { text: JSON.stringify([{ id: "mock-id", title: "Mock Title", description: "Mock Description", type: "prompt", href: "/mock-path", icon: "mock-icon", relevance: 0.9 }]) };
+  try {
+    const { generateText: generateTextLib } = await import('ai')
+    return generateTextLib(options)
+  } catch (error) {
+    // If ai package is not available, return null to use fallback data
+    return null
+  }
 }
 
 async function safeGenerateText(prompt: string): Promise<string | null> {
