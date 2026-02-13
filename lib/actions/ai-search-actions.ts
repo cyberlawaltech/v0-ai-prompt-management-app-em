@@ -45,40 +45,45 @@ async function generateText(options: any): Promise<any> {
   try {
     const { generateText: generateTextLib } = await import('ai')
     return generateTextLib(options)
-  } catch (error) {
-    // If ai package is not available, return null to use fallback data
+  } catch (error: any) {
+    // Return null to use fallback data when AI SDK is not available or not configured
     return null
   }
 }
 
 async function safeGenerateText(prompt: string): Promise<string | null> {
   try {
-    if (!process.env.OPENAI_API_KEY) {
-      console.warn("OpenAI API key not configured")
+    // Check if API key is available before attempting to use AI
+    const hasApiKey = process.env.OPENAI_API_KEY || process.env.ANTHROPIC_API_KEY || process.env.GROQ_API_KEY
+    
+    if (!hasApiKey) {
+      // Silently return null to use fallback data
       return null
     }
 
-    const { text } = await generateText({
+    const result = await generateText({
       model: "openai/gpt-4o-mini",
       prompt,
       maxTokens: 500,
     })
 
-    return text
+    if (!result) {
+      return null
+    }
+
+    return result.text || null
   } catch (error: any) {
     // Handle specific AI Gateway errors
     if (error?.message?.includes("customer_verification_required") || error?.status === 403) {
-      console.warn("AI Gateway requires credit card verification. Using fallback data.")
       return null
     }
     
-    // Handle other API errors
+    // Handle other API errors silently
     if (error?.message?.includes("ai-gateway") || error?.status === 401 || error?.status === 429) {
-      console.warn("AI service temporarily unavailable:", error?.message)
       return null
     }
     
-    console.warn("AI generation failed, using fallback:", error)
+    // Silently return null on any AI generation failure to use fallback
     return null
   }
 }
