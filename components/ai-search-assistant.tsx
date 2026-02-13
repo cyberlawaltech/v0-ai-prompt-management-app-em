@@ -250,6 +250,39 @@ export function AISearchAssistant() {
     performEnhancedSearch()
   }, [debouncedQuery, query, aiAssistant.context, aiAssistant.userBehavior])
 
+  // Define handleResultSelect before using it in the keyboard effect
+  const handleResultSelect = useCallback(
+    (result: SearchResult) => {
+      // Update user behavior
+      const newBehavior = {
+        ...aiAssistant.userBehavior,
+        frequentSearches: [query, ...aiAssistant.userBehavior.frequentSearches.filter((s) => s !== query)].slice(0, 10),
+        preferredCategories: [
+          result.type,
+          ...aiAssistant.userBehavior.preferredCategories.filter((c) => c !== result.type),
+        ].slice(0, 5),
+        recentActivity: [
+          result.href,
+          ...aiAssistant.userBehavior.recentActivity.filter((a) => a !== result.href),
+        ].slice(0, 20),
+      }
+
+      // Save to localStorage
+      const newRecentSearches = [query, ...recentSearches.filter((s) => s !== query)].slice(0, 5)
+      setRecentSearches(newRecentSearches)
+      localStorage.setItem("recent-searches", JSON.stringify(newRecentSearches))
+      localStorage.setItem("user-search-behavior", JSON.stringify(newBehavior))
+
+      setAiAssistant((prev) => ({ ...prev, userBehavior: newBehavior }))
+
+      // Navigate to result
+      router.push(result.href)
+      setIsOpen(false)
+      setQuery("")
+    },
+    [query, recentSearches, router, aiAssistant.userBehavior],
+  )
+
   // Keyboard navigation with enhanced features
   useEffect(() => {
     if (!isOpen) return
@@ -298,38 +331,6 @@ export function AISearchAssistant() {
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [isOpen, results, autoCompletions, selectedIndex, handleResultSelect])
-
-  const handleResultSelect = useCallback(
-    (result: SearchResult) => {
-      // Update user behavior
-      const newBehavior = {
-        ...aiAssistant.userBehavior,
-        frequentSearches: [query, ...aiAssistant.userBehavior.frequentSearches.filter((s) => s !== query)].slice(0, 10),
-        preferredCategories: [
-          result.type,
-          ...aiAssistant.userBehavior.preferredCategories.filter((c) => c !== result.type),
-        ].slice(0, 5),
-        recentActivity: [
-          result.href,
-          ...aiAssistant.userBehavior.recentActivity.filter((a) => a !== result.href),
-        ].slice(0, 20),
-      }
-
-      // Save to localStorage
-      const newRecentSearches = [query, ...recentSearches.filter((s) => s !== query)].slice(0, 5)
-      setRecentSearches(newRecentSearches)
-      localStorage.setItem("recent-searches", JSON.stringify(newRecentSearches))
-      localStorage.setItem("user-search-behavior", JSON.stringify(newBehavior))
-
-      setAiAssistant((prev) => ({ ...prev, userBehavior: newBehavior }))
-
-      // Navigate to result
-      router.push(result.href)
-      setIsOpen(false)
-      setQuery("")
-    },
-    [query, recentSearches, router, aiAssistant.userBehavior],
-  )
 
   const handleAutoCompletionSelect = (completion: string) => {
     setQuery(completion)
