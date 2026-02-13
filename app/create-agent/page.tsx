@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import type { AgentType, WebScrapingProvider, OpenClawSettings, FirecrawlSettings, SpiderCreatorSettings } from "@/lib/types/agent"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,9 +12,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Slider } from "@/components/ui/slider"
 import { Bot, Brain, Code, Settings } from "lucide-react"
+import { AgentTypeSelector } from "@/components/agent-type-selector"
+import { WebScrapingProviderSelector } from "@/components/web-scraping-provider-selector"
+import { OpenClawSettingsComponent } from "@/components/scraper-settings/openclaw-settings"
+import { FirecrawlSettingsComponent } from "@/components/scraper-settings/firecrawl-settings"
+import { SpiderCreatorSettingsComponent } from "@/components/scraper-settings/spidercreator-settings"
 
 export default function CreateAgent() {
   const [step, setStep] = useState(1)
+  const [agentType, setAgentType] = useState<AgentType>("general")
+  const [scrapingProvider, setScrapingProvider] = useState<WebScrapingProvider>("openclaw")
+  const [openClawSettings, setOpenClawSettings] = useState<Partial<OpenClawSettings>>({})
+  const [firecrawlSettings, setFirecrawlSettings] = useState<Partial<FirecrawlSettings>>({})
+  const [spiderCreatorSettings, setSpiderCreatorSettings] = useState<Partial<SpiderCreatorSettings>>({})
 
   const nextStep = () => {
     setStep(step + 1)
@@ -29,41 +40,41 @@ export default function CreateAgent() {
         <h1 className="text-3xl font-bold">Create Agent</h1>
       </div>
 
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-2">
+      <div className="flex items-center justify-between mb-6 overflow-x-auto pb-2">
+        <div className="flex items-center space-x-2 flex-shrink-0">
           <div
             className={`rounded-full p-2 ${step >= 1 ? "bg-green-100 text-green-600" : "bg-slate-100 text-slate-600"}`}
           >
             <Bot className="h-5 w-5" />
           </div>
-          <div>Basic Info</div>
+          <div className="text-sm">Basic Info</div>
         </div>
-        <div className="h-px w-12 bg-slate-200" />
-        <div className="flex items-center space-x-2">
+        <div className="h-px w-8 bg-slate-200 flex-shrink-0" />
+        <div className="flex items-center space-x-2 flex-shrink-0">
           <div
             className={`rounded-full p-2 ${step >= 2 ? "bg-green-100 text-green-600" : "bg-slate-100 text-slate-600"}`}
           >
             <Brain className="h-5 w-5" />
           </div>
-          <div>Capabilities</div>
+          <div className="text-sm">Agent Type</div>
         </div>
-        <div className="h-px w-12 bg-slate-200" />
-        <div className="flex items-center space-x-2">
+        <div className="h-px w-8 bg-slate-200 flex-shrink-0" />
+        <div className="flex items-center space-x-2 flex-shrink-0">
           <div
             className={`rounded-full p-2 ${step >= 3 ? "bg-green-100 text-green-600" : "bg-slate-100 text-slate-600"}`}
           >
             <Code className="h-5 w-5" />
           </div>
-          <div>Framework</div>
+          <div className="text-sm">Framework</div>
         </div>
-        <div className="h-px w-12 bg-slate-200" />
-        <div className="flex items-center space-x-2">
+        <div className="h-px w-8 bg-slate-200 flex-shrink-0" />
+        <div className="flex items-center space-x-2 flex-shrink-0">
           <div
             className={`rounded-full p-2 ${step >= 4 ? "bg-green-100 text-green-600" : "bg-slate-100 text-slate-600"}`}
           >
             <Settings className="h-5 w-5" />
           </div>
-          <div>Configuration</div>
+          <div className="text-sm">Configuration</div>
         </div>
       </div>
 
@@ -109,6 +120,66 @@ export default function CreateAgent() {
       )}
 
       {step === 2 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Select Agent Type</CardTitle>
+            <CardDescription>Choose the type of agent you want to create</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <AgentTypeSelector selectedType={agentType} onSelectType={setAgentType} />
+
+            {agentType === "web-scraping" && (
+              <div className="space-y-4 border-t pt-6">
+                <h3 className="text-lg font-semibold">Web Scraping Configuration</h3>
+                <p className="text-sm text-muted-foreground">Select your preferred web scraping provider</p>
+                <WebScrapingProviderSelector
+                  selectedProvider={scrapingProvider}
+                  onSelectProvider={setScrapingProvider}
+                />
+              </div>
+            )}
+
+            <div className="pt-4 flex justify-between">
+              <Button variant="outline" onClick={prevStep}>
+                Previous Step
+              </Button>
+              <Button onClick={nextStep}>Next Step</Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {step === 3 && agentType === "web-scraping" && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Configure Web Scraping Provider</CardTitle>
+            <CardDescription>Set up advanced settings for your chosen scraping provider</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {scrapingProvider === "openclaw" && (
+              <OpenClawSettingsComponent settings={openClawSettings} onChange={setOpenClawSettings} />
+            )}
+            {scrapingProvider === "firecrawl" && (
+              <FirecrawlSettingsComponent settings={firecrawlSettings} onChange={setFirecrawlSettings} />
+            )}
+            {scrapingProvider === "spidercreator" && (
+              <SpiderCreatorSettingsComponent
+                settings={spiderCreatorSettings}
+                onChange={setSpiderCreatorSettings}
+              />
+            )}
+
+            <div className="pt-4 flex justify-between">
+              <Button variant="outline" onClick={prevStep}>
+                Previous Step
+              </Button>
+              <Button onClick={nextStep}>Next Step</Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {step === 3 && agentType === "general" && (
         <Card>
           <CardHeader>
             <CardTitle>Agent Capabilities</CardTitle>
@@ -175,7 +246,7 @@ export default function CreateAgent() {
         </Card>
       )}
 
-      {step === 3 && (
+      {step === 4 && agentType === "general" && (
         <Card>
           <CardHeader>
             <CardTitle>Agent Framework</CardTitle>
@@ -244,7 +315,7 @@ export default function CreateAgent() {
         </Card>
       )}
 
-      {step === 4 && (
+      {step === (agentType === "web-scraping" ? 5 : 4) && (
         <Card>
           <CardHeader>
             <CardTitle>Agent Configuration</CardTitle>

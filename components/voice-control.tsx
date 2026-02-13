@@ -63,6 +63,13 @@ export function VoiceControl() {
           console.error("Speech recognition error", event.error)
           if (event.error === "not-allowed") {
             setCommandFeedback("Microphone access denied")
+            setIsListening(false)
+          } else if (event.error === "network") {
+            setCommandFeedback("Network error - check your connection")
+            setIsListening(false)
+          } else if (event.error === "no-speech") {
+            setCommandFeedback("No speech detected")
+            setIsListening(false)
           }
         }
       } else {
@@ -99,7 +106,7 @@ export function VoiceControl() {
       if (transcript.length > 5) {
         setProcessingCommand(true)
         try {
-          const response = await fetch("/api/voice-command/route", {
+          const response = await fetch("/api/voice-command", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

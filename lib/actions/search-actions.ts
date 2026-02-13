@@ -24,9 +24,7 @@ export async function getSearchSuggestions(query: string): Promise<SearchSuggest
   try {
     return mockSuggestions
   } catch (error: any) {
-    console.warn("Error in getSearchSuggestions:", error?.message)
-
-    console.error("Error generating search suggestions:", error)
+    console.error("Error generating search suggestions:", error?.message)
     return []
   }
 }
